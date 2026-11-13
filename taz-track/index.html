@@ -141,7 +141,7 @@ svg text{fill:var(--muted);font-size:11px}
 <body>
 <div class="app">
 <aside>
-  <div class="brand"><b>TAZ</b><span>TRACK</span><span style="color:var(--muted);font-size:10px;letter-spacing:.08em;border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin-left:2px">DRAFT 1</span></div>
+  <div class="brand"><b>TAZ</b><span>TRACK</span><span style="color:var(--muted);font-size:10px;letter-spacing:.08em;border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin-left:2px;white-space:nowrap">DRAFT 1</span></div>
   <div class="tag">Shipment intelligence for brands</div>
   <nav>
     <button data-v="overview" class="on">◎ Overview</button>
@@ -149,7 +149,7 @@ svg text{fill:var(--muted);font-size:11px}
     <button data-v="shipments">☰ Shipments</button>
     <button data-v="exceptions">⚑ Exceptions &amp; claims <span class="badge" id="exBadge">0</span></button>
     <button data-v="scorecard">▤ Scorecard &amp; forecast</button>
-    <button data-v="replay">▶ 6-month replay</button>
+    <button data-v="replay">▶ 12-month replay</button>
     <button data-v="connect">⇄ Connect &amp; import</button>
   </nav>
   <div class="acct"><strong>Meridian Goods Co.</strong>East DC · Parsippany, NJ<br>West DC · Reno, NV</div>
@@ -253,27 +253,14 @@ svg text{fill:var(--muted);font-size:11px}
 <!-- REPLAY -->
 <section class="view" id="v-replay">
   <div class="card" style="margin-bottom:14px">
-    <div class="toolbar" style="margin-bottom:6px"><h2 style="margin:0" id="rTitle">Your first 6 months on TAZ Track</h2><div class="spacer"></div><button class="btn ghost" id="rToggle">Set up for a prospect</button></div>
-    <div id="rSetup" style="display:none">
-      <div class="grid" style="grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px">
-        <label class="fld">Preset<select id="cfPreset"></select></label>
-        <label class="fld">Company name<input id="cfName"></label>
-        <label class="fld">Parcels per month<input id="cfPpm" type="number" min="500" step="500"></label>
-        <label class="fld">Product type<select id="cfVert"></select></label>
-        <label class="fld">Ships from<select id="cfDc1"></select></label>
-        <label class="fld">Second warehouse (optional)<select id="cfDc2"></select></label>
-        <label class="fld">Current cost per parcel ($)<input id="cfCpp" type="number" step="0.1" placeholder="auto by product type"></label>
-        <label class="fld">LTL / FTL freight<select id="cfFreight"><option value="1">Yes, include freight</option><option value="0">Parcel only</option></select></label>
-      </div>
-      <div class="toolbar" style="margin-top:12px"><button class="btn" id="cfBuild">Build replay</button><button class="btn ghost" id="cfLink">Copy prospect link</button><span class="note" style="margin:0">The link opens straight into this prospect's replay. Host the file on GitHub Pages first so the link works for anyone.</span></div>
-    </div>
+    <div class="toolbar" style="margin:0"><div><h2 style="margin:0" id="rTitle"></h2><div class="note" style="margin:2px 0 0" id="rSub"></div></div><div class="spacer"></div><span class="note" style="margin:0 6px 0 0">Example brand:</span><div id="rEx" style="display:flex;gap:6px;flex-wrap:wrap"></div></div>
   </div>
   <div class="card">
     <div class="replay-top">
       <button class="playbtn" id="play">▶</button>
       <div class="wk" id="wkLabel"></div>
-      <input type="range" class="scrub" id="scrub" min="0" max="23" value="0">
-      <div class="speed"><button class="chip on" data-sp="900">1×</button><button class="chip" data-sp="450">2×</button><button class="chip" data-sp="200">4×</button></div>
+      <input type="range" class="scrub" id="scrub" min="0" max="51" value="0">
+      <div class="speed"><button class="chip" data-sp="700">1×</button><button class="chip on" data-sp="350">2×</button><button class="chip" data-sp="150">4×</button></div>
     </div>
     <div class="rgrid">
       <div><div id="rMap"></div>
@@ -287,7 +274,7 @@ svg text{fill:var(--muted);font-size:11px}
   <div class="sparks" id="rSparks"></div>
   <div class="grid two" style="margin-top:14px">
     <div class="card"><h2>What TAZ caught, week by week</h2><div id="rEvents"></div></div>
-    <div class="card"><h2>6-month results</h2><div id="rSummary"></div><div class="note"><span id="rAssume"></span> Recovered dollars use the actual refund and claim rules. Ticket savings assume 1 support contact avoided per proactive buyer notice at about $6 each.</div></div>
+    <div class="card"><h2>12-month results</h2><div id="rSummary"></div><div class="note"><span id="rAssume"></span> Recovered dollars use the actual refund and claim rules. Ticket savings assume 1 support contact avoided per proactive buyer notice at about $6 each. All three example brands are fictional.</div></div>
   </div>
 </section>
 
@@ -351,7 +338,6 @@ svg text{fill:var(--muted);font-size:11px}
   </div>
 </section>
 
-<div class="card value" id="rCta" style="display:none;margin-top:14px"><h2 style="margin:0 0 4px">Want to see this on your real shipments?</h2><p class="note" style="margin:0">Send your last 90 days of tracking numbers (a CSV export is fine) by replying to the email this link came in. We will load them and send back your actual 6-month picture: carriers, costs, exceptions and what was recoverable.</p></div>
 <footer>TAZ Track · An HTL Inspired Product · Demo built on sample data for Meridian Goods Co., a fictional brand. Live accounts connect to your carriers' tracking and invoice data.</footer>
 </main>
 </div>
@@ -485,7 +471,7 @@ function hideTip(){tip.style.display="none";}
 function toast(t){const el=document.getElementById("toast");el.textContent=t;el.classList.add("on");setTimeout(()=>el.classList.remove("on"),2200);}
 
 // ---------- nav ----------
-const titles={replay:"6-month replay",connect:"Connect & import",overview:"Overview",map:"Network map",shipments:"Shipments",exceptions:"Exceptions & claims",scorecard:"Scorecard & forecast"};
+const titles={replay:"12-month replay",connect:"Connect & import",overview:"Overview",map:"Network map",shipments:"Shipments",exceptions:"Exceptions & claims",scorecard:"Scorecard & forecast"};
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>{
   document.querySelectorAll("nav button").forEach(x=>x.classList.toggle("on",x===b));
   document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id==="v-"+b.dataset.v));
@@ -880,66 +866,74 @@ document.getElementById("copyCode").onclick=()=>{navigator.clipboard&&navigator.
 renderConns();renderCode();
 
 
-// ---------- 6-month replay ----------
-const HUBS={"parsippany-nj":["Parsippany, NJ",-74.42,40.86],"edison-nj":["Edison, NJ",-74.41,40.52],"brooklyn-ny":["Brooklyn, NY",-73.94,40.65],"allentown-pa":["Allentown, PA",-75.49,40.6],"harrisburg-pa":["Harrisburg, PA",-76.88,40.27],"philadelphia-pa":["Philadelphia, PA",-75.17,39.95],"baltimore-md":["Baltimore, MD",-76.61,39.29],"charlotte-nc":["Charlotte, NC",-80.84,35.23],"savannah-ga":["Savannah, GA",-81.1,32.08],"atlanta-ga":["Atlanta, GA",-84.39,33.75],"miami-fl":["Miami, FL",-80.19,25.76],"orlando-fl":["Orlando, FL",-81.38,28.54],"nashville-tn":["Nashville, TN",-86.78,36.16],"memphis-tn":["Memphis, TN",-90.05,35.15],"louisville-ky":["Louisville, KY",-85.76,38.25],"columbus-oh":["Columbus, OH",-82.99,39.96],"indianapolis-in":["Indianapolis, IN",-86.16,39.77],"chicago-il":["Chicago, IL",-87.63,41.88],"minneapolis-mn":["Minneapolis, MN",-93.27,44.98],"kansas-city-mo":["Kansas City, MO",-94.58,39.1],"dallas-tx":["Dallas, TX",-96.8,32.78],"houston-tx":["Houston, TX",-95.37,29.76],"denver-co":["Denver, CO",-104.99,39.74],"boulder-co":["Boulder, CO",-105.27,40.01],"salt-lake-city-ut":["Salt Lake City, UT",-111.89,40.76],"phoenix-az":["Phoenix, AZ",-112.07,33.45],"reno-nv":["Reno, NV",-119.81,39.53],"las-vegas-nv":["Las Vegas, NV",-115.14,36.17],"ontario-ca":["Ontario, CA",-117.65,34.06],"los-angeles-ca":["Los Angeles, CA",-118.24,34.05],"oakland-ca":["Oakland, CA",-122.27,37.8],"portland-or":["Portland, OR",-122.68,45.52],"seattle-wa":["Seattle, WA",-122.33,47.61]};
+// ---------- 12-month replay ----------
+const HUBS={"edison-nj":["Edison, NJ",-74.41,40.52],"columbus-oh":["Columbus, OH",-82.99,39.96],"reno-nv":["Reno, NV",-119.81,39.53],"dallas-tx":["Dallas, TX",-96.8,32.78],"chicago-il":["Chicago, IL",-87.63,41.88],"atlanta-ga":["Atlanta, GA",-84.39,33.75],"seattle-wa":["Seattle, WA",-122.33,47.61],"denver-co":["Denver, CO",-104.99,39.74],"charlotte-nc":["Charlotte, NC",-80.84,35.23],"phoenix-az":["Phoenix, AZ",-112.07,33.45],"houston-tx":["Houston, TX",-95.37,29.76],"boston-ma":["Boston, MA",-71.06,42.36],"minneapolis-mn":["Minneapolis, MN",-93.27,44.98],"nashville-tn":["Nashville, TN",-86.78,36.16],"kansas-city-mo":["Kansas City, MO",-94.58,39.1]};
+// month factors Jan..Dec (holiday weeks handled separately)
 const VERT={
- apparel:{n:"Apparel & footwear",cpp:9.8,ex:.012,season:i=>(i>=9&&i<=12?1.08:1)*(i>=20?1+(i-19)*.08:1)},
- beauty:{n:"Beauty, fragrance & personal care",cpp:7.9,ex:.011,season:i=>(i>=20?1+(i-19)*.1:1)},
- home:{n:"Home, kitchen & drinkware",cpp:12.4,ex:.013,season:i=>(i<=6?1.12:1)*(i>=20?1+(i-19)*.08:1)},
- heavy:{n:"Heavy or bulky goods like grills and furniture",cpp:21.5,ex:.016,season:i=>(i<=8?1.15:1)*(i>=20?1+(i-19)*.07:1)},
- accessories:{n:"Accessories & electronics",cpp:8.6,ex:.011,season:i=>(i>=9&&i<=12?1.1:1)*(i>=20?1+(i-19)*.11:1)},
- general:{n:"General merchandise",cpp:11.5,ex:.012,season:i=>(i>=20?1+(i-19)*.08:1)},
+ beauty:{n:"Beauty & skincare",cpp:7.9,ex:.011,m:[.84,1.12,.98,1.0,1.18,.97,.95,.98,1.0,1.04,1.1,1.25]},
+ apparel:{n:"Apparel & footwear",cpp:9.8,ex:.012,m:[.86,.94,1.0,1.02,1.03,.98,.96,1.14,1.06,1.04,1.1,1.25]},
+ heavy:{n:"Home, grills & cast iron",cpp:21.5,ex:.016,m:[.8,.86,1.0,1.18,1.28,1.32,1.12,.98,.95,.98,1.08,1.25]},
 };
-const PRESETS={
- meridian:{label:"Meridian Goods Co. (sample brand)",name:"Meridian Goods Co.",ppm:23800,v:"home",dc1:"parsippany-nj",dc2:"reno-nv",freight:1,cpp:14.42},
- blank:{label:"New prospect…",name:"",ppm:8000,v:"general",dc1:"parsippany-nj",dc2:"",freight:1},
+const EXAMPLES={
+ lumora:{name:"Lumora Skin",tag:"DTC skincare · ~9,000 parcels/mo · one warehouse · parcel only",ppm:9000,v:"beauty",dc1:"edison-nj",dc2:"",freight:0},
+ trailwind:{name:"Trailwind Apparel",tag:"Apparel & footwear · ~22,000 parcels/mo · two warehouses · parcel + LTL to retailers",ppm:22000,v:"apparel",dc1:"columbus-oh",dc2:"reno-nv",freight:1},
+ ironhaven:{name:"Ironhaven Home",tag:"Grills & cast iron · ~6,000 heavy parcels/mo · LTL + FTL to big-box DCs",ppm:6000,v:"heavy",dc1:"dallas-tx",dc2:"",freight:2},
 };
-let CFG={...PRESETS.meridian};
+let EXK="trailwind",CFG=EXAMPLES[EXK];
 const hash=str=>{let h=2166136261;for(const c of str)h=Math.imul(h^c.charCodeAt(0),16777619);return h>>>0;};
+const NW=52, RSTART=new Date(2025,10,17); // Mon Nov 17 2025 → week 52 ends Nov 15 2026
 let RW=[],REVT=[],RLANES=[],RDC=[];
+function weekFactor(i,d,V){
+  const holiday=[1.0,1.62,1.45,1.3,1.18,.78,.72][i]; if(holiday!==undefined&&i<7)return holiday*(i===0?1.12:1);
+  let f=V.m[d.getMonth()]; if(i>=49)f*=1+(i-48)*.06; return f;}
 function buildReplay(cfg){
-  let rs=hash(cfg.name||"x")||1;const RR=()=>{rs|=0;rs=rs+0x6D2B79F5|0;let x=Math.imul(rs^rs>>>15,1|rs);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};
-  const V=VERT[cfg.v]||VERT.general, cpp0=+cfg.cpp||V.cpp, two=!!cfg.dc2;
-  RDC=[cfg.dc1,cfg.dc2].filter(Boolean).map(k=>({k,name:HUBS[k][0],lon:HUBS[k][1],lat:HUBS[k][2]}));
+  let rs=hash(cfg.name)||1;const RR=()=>{rs|=0;rs=rs+0x6D2B79F5|0;let x=Math.imul(rs^rs>>>15,1|rs);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296;};
+  const V=VERT[cfg.v], cpp0=V.cpp, two=!!cfg.dc2, k=cpp0/14.42;
+  RDC=[cfg.dc1,cfg.dc2].filter(Boolean).map(h=>({k:h,name:HUBS[h][0],lon:HUBS[h][1],lat:HUBS[h][2]}));
   const nearest=(st,useAll)=>{const c=centroid[st];if(!useAll||RDC.length<2)return RDC[0];return RDC.reduce((a,b)=>d3.geoDistance([a.lon,a.lat],c)<=d3.geoDistance([b.lon,b.lat],c)?a:b);};
-  const wk=cfg.ppm*12/52, start=new Date(2026,5,1);
-  let cumRec=0,cumSave=0,cumEx=0,cumPar=0,cumNotify=0; RW=[];
-  for(let i=0;i<24;i++){const d=new Date(start.getTime()+i*7*dayMs);
-    let f=(1+i*.006)*V.season(i); if(i===4)f*=.9;
-    const se=i>=22;const sv={};
-    stList.forEach(k=>{sv[k]=Math.round(wk*f*POP[k]/totalPop*(se&&SE.includes(k)?.62:1)*(0.9+RR()*.2));});
+  const wk=cfg.ppm*12/52;let cR=0,cS=0,cE=0,cP=0,cN=0,cF=0;RW=[];
+  for(let i=0;i<NW;i++){const d=new Date(RSTART.getTime()+i*7*dayMs);
+    const f=(1+i*.0024)*weekFactor(i,d,V);const se=i>=50;const sv={};
+    stList.forEach(s=>{sv[s]=Math.round(wk*f*POP[s]/totalPop*(se&&SE.includes(s)?.62:1)*(0.9+RR()*.2));});
     const par=d3.sum(Object.values(sv));
-    const ot=Math.min(.972,.931+i*.0017+(i===6||i===7?-.016:0)+(RR()-.5)*.004);
-    const drop=two?.30:.22; // routing or carrier-mix saving per parcel, scaled to baseline
-    const k=cpp0/14.42;
-    const cpp=i<10?cpp0-RR()*.06*k:Math.max(cpp0-drop*k,cpp0-(i-9)*.045*k)-RR()*.03*k;
-    const ex=Math.round(par*(V.ex+(i===6||i===7?.006:0))*(0.9+RR()*.2));
-    const rec=Math.round(ex*.28*(18+RR()*14)*k+(i===6||i===7?240*k*wk/5500:0));
-    const save=i<10?0:Math.round(par*Math.max(0,cpp0-cpp));
-    cumRec+=rec;cumSave+=save;cumEx+=ex;cumPar+=par;cumNotify+=Math.round(ex*.82);
-    RW.push({i,d,sv,par,ot,cpp,ex,rec,save,detect:Math.max(3.2,9.6-i*.32),ltl:cfg.freight?2+Math.round(RR()*3)+(i>=20?2:0):0,ftl:cfg.freight?1+Math.round(RR()*2)+(i>=20?2:0):0,cumRec,cumSave,cumEx,cumPar,cumNotify,se,assign:st=>nearest(st,i>=9)});}
-  // freight lanes from the first DC to big metros + an inbound lane
-  RLANES=[];if(cfg.freight){const d1=RDC[0];const west=d1.lon<-100;const port=west?[-118.19,33.77,"Long Beach, CA"]:(d1.lat<36?[-81.1,32.08,"Savannah, GA"]:[-74.15,40.69,"Port Newark, NJ"]);
-    RLANES.push({mode:"ftl",fl:[port[0],port[1]],tl:[d1.lon,d1.lat],what:"Inbound container → "+d1.name});
-    if(RDC[1])RLANES.push({mode:"ftl",fl:[d1.lon,d1.lat],tl:[RDC[1].lon,RDC[1].lat],what:"Inventory rebalance → "+RDC[1].name});
-    [["dallas-tx","ftl"],["chicago-il","ltl"],["atlanta-ga","ltl"],["seattle-wa","ltl"],["denver-co","ltl"],["charlotte-nc","ltl"],["phoenix-az","ftl"],["columbus-oh","ltl"]].filter(([h])=>h!==cfg.dc1&&h!==cfg.dc2).forEach(([h,m])=>RLANES.push({mode:m,fl:[d1.lon,d1.lat],tl:[HUBS[h][1],HUBS[h][2]],what:(m==="ftl"?"Retail DC order → ":"Retail partner replenishment → ")+HUBS[h][0]}));}
-  const W=RW, peak=Math.round((W[22].par/W[18].par-1)*100), g2=Math.round(W[6].rec+W[7].rec);
-  REVT=[
-   {w:0,c:"var(--accent)",t:"Account live",p:`Carriers${cfg.freight?" and LTL/FTL":""} connected and 90 days backfilled, so about ${fmt(Math.round(cfg.ppm*3/100)*100)} historical shipments were imported on day one.`},
-   {w:2,c:"var(--info)",t:"First weekly digest",p:"Ops, customer service and finance each get their own Monday summary."},
-   {w:4,c:"var(--muted)",t:"July 4th week",p:"Volume dipped about 10% as expected, and TAZ marked it seasonal so no false alarm went out."},
-   {w:6,c:"var(--bad)",t:"2-Day service slipping",p:`On-time fell to about 91.8% for two weeks. TAZ flagged it on day 2 and filed ${money0(g2)} in late-delivery refunds and claims.`},
-   {w:9,c:"var(--warn)",t:two?`West-zone orders shifted to ${RDC[1].name}`:"Zone 7–8 moved to a better carrier mix",p:two?`The scorecard showed far-zone orders shipping from ${RDC[0].name}. After the routing change, cost per parcel started falling.`:"The zone scorecard showed long-zone parcels overpaying. A regional carrier took over Zones 7–8 and cost per parcel started falling."},
-   {w:12,c:"var(--info)",t:"USPS and the store platform connected",p:"Coverage hit 100% of parcels, and average time to detect a problem dropped under 6 hours."},
-   {w:16,c:"var(--accent)",t:"Buyer tracking page launched",p:"Proactive delay emails began going to buyers before they could call."},
-   {w:19,c:"var(--warn)",t:"Peak forecast issued",p:`The forecast called for about +${peak}% in Black Friday week, so extra pickups${cfg.freight?" and inbound freight":""} were booked early.`},
-   {w:22,c:"var(--bad)",t:"Southeast volume drop",p:`Shipments to 6 Southeast states fell 38%. TAZ traced it to missed pickups at ${RDC[0].name} within 48 hours.`},
+    const peakDip=(i===4||i===5)?-.045:(i===3?-.02:0), sumDip=(i===33||i===34)?-.016:0;
+    const ot=Math.min(.974,.932+Math.min(i,40)*.00095+peakDip+sumDip+(RR()-.5)*.004);
+    const cpp=i<19?cpp0-RR()*.06*k:Math.max(cpp0-(two?.34:.24)*k,cpp0-(i-18)*.04*k)-RR()*.03*k;
+    const exRate=V.ex+(peakDip?.009:0)+(sumDip?.006:0);
+    const ex=Math.round(par*exRate*(0.9+RR()*.2));
+    const rec=Math.round(ex*.28*(18+RR()*14)*k);
+    const save=i<19?0:Math.round(par*Math.max(0,cpp0-cpp));
+    const ltl=cfg.freight?(cfg.freight===2?3:2)+Math.round(RR()*3)+(i<5||i>=48?2:0):0, ftl=cfg.freight?(cfg.freight===2?2:1)+Math.round(RR()*(cfg.freight===2?3:1))+(i<5||i>=48?1:0):0;
+    cR+=rec;cS+=save;cE+=ex;cP+=par;cN+=Math.round(ex*.82);cF+=ltl+ftl;
+    RW.push({i,d,sv,par,ot,cpp,ex,rec,save,detect:Math.max(3.1,9.6-i*.33),ltl,ftl,cumRec:cR,cumSave:cS,cumEx:cE,cumPar:cP,cumNotify:cN,cumFr:cF,se,assign:s=>nearest(s,i>=19)});}
+  RLANES=[];if(cfg.freight){const d1=RDC[0];const port=d1.lon<-100?[-118.19,33.77]:(d1.lon<-90?[-95.27,29.73]:[-74.15,40.69]);
+    RLANES.push({mode:"ftl",fl:port,tl:[d1.lon,d1.lat],what:"Inbound container to "+d1.name});
+    if(RDC[1])RLANES.push({mode:"ftl",fl:[d1.lon,d1.lat],tl:[RDC[1].lon,RDC[1].lat],what:"Inventory rebalance to "+RDC[1].name});
+    const dest=cfg.freight===2?[["atlanta-ga","ftl"],["chicago-il","ftl"],["phoenix-az","ltl"],["charlotte-nc","ltl"],["denver-co","ltl"],["kansas-city-mo","ltl"],["nashville-tn","ftl"],["houston-tx","ltl"]]:[["chicago-il","ltl"],["boston-ma","ltl"],["atlanta-ga","ltl"],["seattle-wa","ltl"],["denver-co","ltl"],["minneapolis-mn","ltl"],["dallas-tx","ftl"]];
+    dest.filter(([h])=>h!==cfg.dc1&&h!==cfg.dc2).forEach(([h,m])=>RLANES.push({mode:m,fl:[d1.lon,d1.lat],tl:[HUBS[h][1],HUBS[h][2]],what:(m==="ftl"?"Retailer DC truckload to ":"Retail partner LTL to ")+HUBS[h][0]}));}
+  const W=RW,pct0=x=>Math.round(x*100),sumRec=(a,b)=>money0(d3.sum(W.slice(a,b+1),w=>w.rec));
+  const ev=[
+   {w:0,c:"var(--accent)",t:"Account live, two weeks before peak",p:`Carriers${cfg.freight?" and freight partners":""} connected and 90 days backfilled, so about ${fmt(Math.round(cfg.ppm*3/100)*100)} historical shipments were imported on day one.`},
+   {w:1,c:"var(--warn)",t:"Black Friday week",p:`Volume ran ${pct0(W[1].par/W[0].par-1)}% above the week before. TAZ caught 2 missed pickups at ${RDC[0].name} the same afternoon.`},
+   {w:4,c:"var(--bad)",t:"Holiday weather delays",p:`On-time fell to ${pct(W[4].ot)}. TAZ sent ${fmt(Math.round(W[4].ex*.82+W[5].ex*.82))} proactive delay notices and filed ${sumRec(3,5)} in refunds and claims across the stretch.`},
+   {w:7,c:"var(--muted)",t:"January slowdown",p:"Volume dropped about 15%. TAZ marked it seasonal against your history, so no false alarm went out."},
+   {w:19,c:"var(--warn)",t:two?`West orders shifted to ${RDC[1].name}`:"Long-zone parcels moved to a regional carrier",p:two?`The zone scorecard showed far-zone orders shipping from ${RDC[0].name}. After the routing change, cost per parcel started falling.`:"The zone scorecard showed Zones 7–8 overpaying. A regional carrier took over that lane and cost per parcel started falling."},
+   {w:23,c:"var(--info)",t:"USPS and the store platform connected",p:"Coverage hit 100% of parcels, and average time to detect a problem dropped under 4 hours."},
+   {w:29,c:"var(--accent)",t:"Buyer tracking page launched",p:"Branded tracking and delay emails went live, so buyers heard about problems before they had to ask."},
+   {w:33,c:"var(--bad)",t:"2-Day service slipping in summer heat",p:`On-time dipped to ${pct(W[33].ot)} for two weeks. TAZ flagged it on day 2 and filed ${sumRec(33,34)} in refunds.`},
+   {w:44,c:"var(--warn)",t:"Peak forecast issued",p:`Using last year's peak, TAZ forecast Black Friday week at about ${fmt(Math.round(W[1].par*1.12/100)*100)} parcels. Extra pickups${cfg.freight?" and inbound freight":""} were booked early.`},
+   {w:50,c:"var(--bad)",t:"Southeast volume drop",p:`Shipments to 6 Southeast states fell 38%. TAZ traced it to missed pickups at ${RDC[0].name} within 48 hours.`},
   ];
-  document.getElementById("rTitle").textContent=`${cfg.name||"Your brand"}: first 6 months on TAZ Track`;
-  document.getElementById("rAssume").textContent=`This is a simulation for ${cfg.name||"a sample brand"}, built on about ${fmt(cfg.ppm)} parcels a month (${VERT[cfg.v].n.toLowerCase()}) shipping from ${RDC.map(d=>d.name).join(" and ")}${cfg.freight?", plus regular LTL and FTL":""}, starting at ${money(cpp0)} per parcel.`;
+  if(cfg.v==="beauty")ev.push({w:12,c:"var(--info)",t:"Valentine's push",p:`February ran ${pct0(VERT.beauty.m[1]-1)}% above normal. TAZ held 2-day promises on 97% of gift orders.`},{w:25,c:"var(--info)",t:"Mother's Day rush",p:"The busiest week outside of Q4. Cutoff-date alerts went to customer service three days early."});
+  if(cfg.v==="apparel")ev.push({w:8,c:"var(--info)",t:"Returns spike tracked",p:"Holiday returns peaked in January. TAZ tracked every return label and flagged refunds ready to issue."},{w:37,c:"var(--info)",t:"Back-to-school surge",p:`August ran ${pct0(VERT.apparel.m[7]-1)}% above normal, and LTL replenishment to retail partners doubled.`});
+  if(cfg.v==="heavy")ev.push({w:14,c:"var(--bad)",t:"Damaged LTL shipment",p:"A pallet of cast iron arrived damaged in Phoenix. TAZ pulled the POD photos and filed the freight claim the same day."},{w:21,c:"var(--info)",t:"Grilling season",p:`April through June ran up to ${pct0(VERT.heavy.m[5]-1)}% above normal, so FTL to big-box DCs was booked weekly.`});
+  REVT=ev.sort((a,b)=>a.w-b.w);
+  document.getElementById("rTitle").textContent=`${cfg.name}: one year on TAZ Track`;
+  document.getElementById("rSub").textContent=cfg.tag;
+  document.getElementById("rAssume").textContent=`This is a simulated year for ${cfg.name}, a fictional ${VERT[cfg.v].n.toLowerCase()} brand shipping about ${fmt(cfg.ppm)} parcels a month from ${RDC.map(d=>d.name).join(" and ")}${cfg.freight?", plus regular LTL and FTL":""}, starting at ${money(cpp0)} per parcel.`;
 }
-let RI=0,RT=null,RSP=900,rReady=false,rProj,rPaths,rArcG,rDcG;
-function planFee(ppm){return ppm<=5000?149:ppm<=25000?349:749;}
+let RI=0,RT=null,RSP=350,rReady=false,rProj,rPaths,rArcG,rDcG;
+const planFee=ppm=>ppm<=5000?149:ppm<=25000?349:749;
 function replayInit(){if(!rReady){rReady=true;
   const W=960,H=560,svg=d3.select("#rMap").html("").append("svg").attr("viewBox",`0 0 ${W} ${H}`);
   rProj=d3.geoAlbersUsa().fitExtent([[10,10],[W-10,H-10]],{type:"FeatureCollection",features:states});const path=d3.geoPath(rProj);
@@ -953,77 +947,55 @@ function rebuildSide(){
   RDC.forEach(d=>{const xy=rProj([d.lon,d.lat]);if(!xy)return;const west=d.lon<-100;rDcG.append("circle").attr("cx",xy[0]).attr("cy",xy[1]).attr("r",8).attr("fill","#08080A").attr("stroke","var(--accent)").attr("stroke-width",3);rDcG.append("text").attr("x",xy[0]+(west?12:-12)).attr("y",xy[1]-10).attr("text-anchor",west?"start":"end").attr("style","fill:#ECECF1;font-size:13px;font-weight:700").text(d.name);});
   const SP=[{h:"Parcels per week",f:fmt,c:"var(--accent)",v:w=>w.par},{h:"On-time delivery",f:pct,c:"var(--info)",v:w=>w.ot},{h:"Cost per parcel",f:money,c:"var(--warn)",v:w=>w.cpp},{h:"Recovered + saved (cumulative)",f:money0,c:"var(--accent)",v:w=>w.cumRec+w.cumSave}];
   document.getElementById("rSparks").innerHTML=SP.map((s,j)=>`<div class="card"><h3>${s.h}</h3><div class="v" id="spv${j}" style="font-size:20px;font-weight:700"></div><div id="sp${j}"></div></div>`).join("");
-  SP.forEach((s,j)=>{const Wd=300,Hd=90,val=s.v;const x=d3.scaleLinear().domain([0,23]).range([4,Wd-4]),y=d3.scaleLinear().domain(d3.extent(RW,val)).nice().range([Hd-6,6]);
+  SP.forEach((s,j)=>{const Wd=300,Hd=90,val=s.v;const x=d3.scaleLinear().domain([0,NW-1]).range([4,Wd-4]),y=d3.scaleLinear().domain(d3.extent(RW,val)).nice().range([Hd-6,6]);
     const g=d3.select("#sp"+j).append("svg").attr("viewBox",`0 0 ${Wd} ${Hd}`);
     g.append("path").datum(RW).attr("fill","none").attr("stroke","#2A2A33").attr("stroke-width",2).attr("d",d3.line().x(w=>x(w.i)).y(w=>y(val(w))).curve(d3.curveMonotoneX));
     const done=g.append("path").attr("fill","none").attr("stroke",s.c).attr("stroke-width",2.4);const dot=g.append("circle").attr("r",4).attr("fill",s.c);
     s.upd=()=>{done.attr("d",d3.line().x(w=>x(w.i)).y(w=>y(val(w))).curve(d3.curveMonotoneX)(RW.slice(0,RI+1)));dot.attr("cx",x(RI)).attr("cy",y(val(RW[RI])));document.getElementById("spv"+j).textContent=s.f(val(RW[RI]));};});
   window._SP=SP;
-  document.getElementById("rEvents").innerHTML=REVT.map(e=>`<div class="evt" data-ew="${e.w}"><i style="background:${e.c}"></i><div><b>Week ${e.w+1} · ${dstr(RW[e.w].d)} — ${e.t}</b><p>${e.p}</p></div></div>`).join("");
+  document.getElementById("rEvents").innerHTML=REVT.map(e=>`<div class="evt" data-ew="${e.w}"><i style="background:${e.c}"></i><div><b>Week ${e.w+1} · ${RW[e.w].d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})} — ${e.t}</b><p>${e.p}</p></div></div>`).join("");
   document.querySelectorAll("[data-ew]").forEach(el=>el.onclick=()=>{rStop();RI=+el.dataset.ew;replayDraw();});
+  document.getElementById("rEx").innerHTML=Object.entries(EXAMPLES).map(([k,c])=>`<button class="chip ${k===EXK?"on":""}" data-ex="${k}">${c.name}</button>`).join("");
+  document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{EXK=b.dataset.ex;CFG=EXAMPLES[EXK];rStop();RI=0;buildReplay(CFG);rebuildSide();replayDraw();});
 }
 function replayDraw(){const w=RW[RI];document.getElementById("scrub").value=RI;
-  const end=new Date(w.d.getTime()+6*dayMs);
-  document.getElementById("wkLabel").innerHTML=`Week ${RI+1} of 24<small>${dstr(w.d)} – ${dstr(end)}, 2026</small>`;
+  const end=new Date(w.d.getTime()+6*dayMs),o={month:"short",day:"numeric"};
+  document.getElementById("wkLabel").innerHTML=`Week ${RI+1} of ${NW}<small>${w.d.toLocaleDateString("en-US",o)} – ${end.toLocaleDateString("en-US",{...o,year:"numeric"})}</small>`;
   const max=d3.max(RW,x=>d3.max(Object.values(x.sv)));const col=d3.scaleSequential(d3.interpolateRgb("#14241F","#3DDCB0")).domain([0,Math.sqrt(max)]);
-  rPaths.transition().duration(Math.min(RSP*.8,500)).attr("fill",f=>{const a=ABBR[f.properties.name];return w.se&&SE.includes(a)?d3.interpolateRgb("#3A1A1D","#F2555A")(.35+Math.sqrt(w.sv[a]||0)/Math.sqrt(max)*.6):col(Math.sqrt(w.sv[a]||0));});
+  rPaths.transition().duration(Math.min(RSP*.8,400)).attr("fill",f=>{const a=ABBR[f.properties.name];return w.se&&SE.includes(a)?d3.interpolateRgb("#3A1A1D","#F2555A")(.35+Math.sqrt(w.sv[a]||0)/Math.sqrt(max)*.6):col(Math.sqrt(w.sv[a]||0));});
   rArcG.selectAll("*").remove();
   const arc=(a,b,bend)=>{const p1=rProj(a),p2=rProj(b);if(!p1||!p2)return null;const dx=p2[0]-p1[0],dy=p2[1]-p1[1];return `M${p1}Q${(p1[0]+p2[0])/2-dy*bend},${(p1[1]+p2[1])/2+dx*bend} ${p2}`;};
-  stList.filter(k=>!["AK","HI"].includes(k)).sort((a,b)=>w.sv[b]-w.sv[a]).slice(0,14).forEach(k=>{const dc=w.assign(k);const d=arc([dc.lon,dc.lat],centroid[k],.18);if(d)rArcG.append("path").attr("d",d).attr("fill","none").attr("stroke",w.se&&SE.includes(k)?"var(--bad)":"var(--accent)").attr("stroke-opacity",.55).attr("stroke-width",Math.max(1,Math.sqrt(w.sv[k])/(Math.sqrt(max)/9)));});
-  RLANES.slice(0,Math.min(RLANES.length,w.ltl+w.ftl)).forEach(L=>{const d=arc(L.fl,L.tl,.12);if(d)rArcG.append("path").attr("d",d).attr("fill","none").attr("stroke",L.mode==="ftl"?"var(--ftl)":"var(--ltl)").attr("stroke-width",2).attr("stroke-dasharray",L.mode==="ltl"?"6 4":"none").on("mousemove",e=>showTip(e,`<b>${L.mode.toUpperCase()}</b>${L.what}`)).on("mouseleave",hideTip);});
+  stList.filter(s=>!["AK","HI"].includes(s)).sort((a,b)=>w.sv[b]-w.sv[a]).slice(0,14).forEach(s=>{const dc=w.assign(s);const d=arc([dc.lon,dc.lat],centroid[s],.18);if(d)rArcG.append("path").attr("d",d).attr("fill","none").attr("stroke",w.se&&SE.includes(s)?"var(--bad)":"var(--accent)").attr("stroke-opacity",.55).attr("stroke-width",Math.max(1,Math.sqrt(w.sv[s])/(Math.sqrt(max)/9)));});
+  RLANES.slice(0,Math.min(RLANES.length,w.ltl+w.ftl)).forEach(L=>{const d=arc(L.fl,L.tl,.12);if(d)rArcG.append("path").attr("d",d).attr("fill","none").attr("stroke",L.mode==="ftl"?"var(--ftl)":"var(--ltl)").attr("stroke-width",2.2).attr("stroke-dasharray",L.mode==="ltl"?"6 4":"none").on("mousemove",e=>showTip(e,`<b>${L.mode.toUpperCase()}</b>${L.what}`)).on("mouseleave",hideTip);});
   const val=w.cumRec+w.cumSave+w.cumNotify*6;
   document.getElementById("rValue").textContent=money0(val);
   document.getElementById("rValueSub").textContent=`${money0(w.cumRec)} recovered · ${money0(w.cumSave)} saved on routing · ${money0(w.cumNotify*6)} in support time`;
   const prev=RW[Math.max(0,RI-1)],c0=RW[0].cpp;
   document.getElementById("rMini").innerHTML=[
-    ["Parcels this week",fmt(w.par),`${fmt(w.cumPar)} tracked total`,"flat"],
+    ["Parcels this week",fmt(w.par),`${fmt(w.cumPar)} tracked so far`,"flat"],
     ["On-time",pct(w.ot),(w.ot>=prev.ot?"▲ ":"▼ ")+(Math.abs(w.ot-prev.ot)*100).toFixed(1)+" pts",w.ot>=prev.ot?"up":"down"],
     ["Exceptions caught",fmt(w.ex),`${fmt(w.cumEx)} total · ${fmt(w.cumNotify)} buyers notified`,"flat"],
     ["Time to detect",w.detect.toFixed(1)+" hrs",RI?"down from 9.6 hrs in week 1":"carrier data still filling in","up"],
-    ["Cost per parcel",money(w.cpp),RI>=10?"▼ "+money(c0-w.cpp)+" vs. week 1":"baseline",RI>=10?"up":"flat"],
+    ["Cost per parcel",money(w.cpp),RI>=19?"▼ "+money(c0-w.cpp)+" vs. week 1":"baseline",RI>=19?"up":"flat"],
     ["Freight loads",w.ltl+w.ftl,CFG.freight?`${w.ftl} FTL · ${w.ltl} LTL`:"parcel only","flat"]].map(([h,v,d,c])=>`<div class="card kpi"><h3>${h}</h3><div class="v">${v}</div><div class="d ${c}">${d}</div></div>`).join("");
   (window._SP||[]).forEach(s=>s.upd&&s.upd());
   document.querySelectorAll("[data-ew]").forEach(el=>{const ew=+el.dataset.ew;el.classList.toggle("on",ew<=RI);el.classList.toggle("now",ew===RI);});
-  const fees=planFee(CFG.ppm)*Math.max(1,Math.ceil((RI+1)/4.3));
+  const months=Math.max(1,Math.round((RI+1)/4.33)),fees=planFee(CFG.ppm)*months;
   document.getElementById("rSummary").innerHTML=`<table><tbody>
-   <tr><td>Shipments tracked</td><td><b>${fmt(w.cumPar+d3.sum(RW.slice(0,RI+1),x=>x.ltl+x.ftl))}</b></td><td class="flat">${CFG.freight?"parcel, LTL and FTL":"parcel"}</td></tr>
+   <tr><td>Shipments tracked</td><td><b>${fmt(w.cumPar+w.cumFr)}</b></td><td class="flat">${CFG.freight?fmt(w.cumFr)+" of them LTL/FTL loads":"parcel"}</td></tr>
    <tr><td>Exceptions caught early</td><td><b>${fmt(w.cumEx)}</b></td><td class="flat">${fmt(w.cumNotify)} buyers told before they called</td></tr>
    <tr><td>Refunds and claims recovered</td><td><b>${money0(w.cumRec)}</b></td><td class="up">late, lost and damaged</td></tr>
    <tr><td>Saved by routing changes</td><td><b>${money0(w.cumSave)}</b></td><td class="up">from the zone scorecard</td></tr>
    <tr><td>On-time delivery</td><td><b>${pct(RW[0].ot)} → ${pct(w.ot)}</b></td><td class="${w.ot>RW[0].ot?"up":"down"}">week 1 vs. now</td></tr>
    <tr><td>Time to detect a problem</td><td><b>9.6 → ${w.detect.toFixed(1)} hrs</b></td><td class="up">as more carriers connected</td></tr>
-   <tr><td>Total value</td><td><b class="up">${money0(val)}</b></td><td class="flat">vs. ${money0(fees)} in plan fees (${money0(planFee(CFG.ppm))}/mo)</td></tr></tbody></table>`;
+   <tr><td>Total value</td><td><b class="up">${money0(val)}</b></td><td class="flat">vs. ${money0(fees)} in plan fees (${money0(planFee(CFG.ppm))}/mo × ${months})</td></tr></tbody></table>`;
 }
 function rStop(){clearInterval(RT);RT=null;document.getElementById("play").textContent="▶";}
-function rPlay(){if(RI>=23)RI=0;document.getElementById("play").textContent="❚❚";RT=setInterval(()=>{if(RI>=23){rStop();return;}RI++;replayDraw();},RSP);}
+function rPlay(){if(RI>=NW-1)RI=0;document.getElementById("play").textContent="❚❚";RT=setInterval(()=>{if(RI>=NW-1){rStop();return;}RI++;replayDraw();},RSP);}
 document.getElementById("play").onclick=()=>RT?rStop():rPlay();
 document.getElementById("scrub").oninput=e=>{rStop();RI=+e.target.value;replayDraw();};
 document.querySelectorAll("[data-sp]").forEach(b=>b.onclick=()=>{RSP=+b.dataset.sp;document.querySelectorAll("[data-sp]").forEach(x=>x.classList.toggle("on",x===b));if(RT){rStop();rPlay();}});
-// setup form
-const opt=(o,sel)=>Object.entries(o).map(([k,v])=>`<option value="${k}" ${k===sel?"selected":""}>${v}</option>`).join("");
-const hubOpts=Object.fromEntries(Object.entries(HUBS).map(([k,v])=>[k,v[0]]));
-function fillForm(c){document.getElementById("cfName").value=c.name;document.getElementById("cfPpm").value=c.ppm;
-  document.getElementById("cfVert").innerHTML=opt(Object.fromEntries(Object.entries(VERT).map(([k,v])=>[k,v.n])),c.v);
-  document.getElementById("cfDc1").innerHTML=opt(hubOpts,c.dc1);document.getElementById("cfDc2").innerHTML=`<option value="">None</option>`+opt(hubOpts,c.dc2);
-  document.getElementById("cfCpp").value=c.cpp||"";document.getElementById("cfFreight").value=c.freight?"1":"0";}
-document.getElementById("cfPreset").innerHTML=Object.entries(PRESETS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("");
-document.getElementById("cfPreset").onchange=e=>fillForm(PRESETS[e.target.value]);
-document.getElementById("rToggle").onclick=()=>{const s=document.getElementById("rSetup");s.style.display=s.style.display==="none"?"block":"none";};
-function readForm(){return {name:document.getElementById("cfName").value.trim()||"Your brand",ppm:Math.max(500,+document.getElementById("cfPpm").value||8000),v:document.getElementById("cfVert").value,dc1:document.getElementById("cfDc1").value,dc2:document.getElementById("cfDc2").value===document.getElementById("cfDc1").value?"":document.getElementById("cfDc2").value,cpp:+document.getElementById("cfCpp").value||0,freight:document.getElementById("cfFreight").value==="1"?1:0};}
-function applyCfg(c){CFG=c;rStop();RI=0;buildReplay(CFG);if(rReady){rebuildSide();replayDraw();}}
-document.getElementById("cfBuild").onclick=()=>{applyCfg(readForm());toast(`Replay built for ${CFG.name}`);};
-function cfgLink(c){const q=new URLSearchParams({replay:"1",co:c.name,ppm:c.ppm,v:c.v,from:c.dc1});if(c.dc2)q.set("from2",c.dc2);if(c.cpp)q.set("cpp",c.cpp);if(!c.freight)q.set("freight","0");return location.href.split("?")[0].split("#")[0]+"?"+q.toString();}
-document.getElementById("cfLink").onclick=()=>{const c=readForm();const url=cfgLink(c);navigator.clipboard&&navigator.clipboard.writeText(url);toast("Prospect link copied");};
-// URL params → open replay for that prospect
-(()=>{const q=new URLSearchParams(location.search);fillForm(CFG);
-  if(q.get("co")){const c={name:q.get("co"),ppm:+q.get("ppm")||8000,v:VERT[q.get("v")]?q.get("v"):"general",dc1:HUBS[q.get("from")]?q.get("from"):"parsippany-nj",dc2:HUBS[q.get("from2")]?q.get("from2"):"",cpp:+q.get("cpp")||0,freight:q.get("freight")==="0"?0:1};CFG=c;fillForm(c);document.getElementById("cfPreset").value="blank";}
-  buildReplay(CFG);
-  if(q.get("replay")==="1")setTimeout(()=>{nav("replay");document.querySelector(".acct").innerHTML=`<strong>${CFG.name}</strong>Prepared by TAZ Track<br>6-month preview`;
-   document.querySelectorAll('nav button').forEach(b=>{if(b.dataset.v!=="replay")b.style.display="none";});
-   document.getElementById("modeChips").style.display="none";document.querySelector(".demo").textContent="Simulated preview";
-   document.getElementById("rToggle").style.display="none";document.getElementById("rCta").style.display="block";
-   document.querySelector("header.top .sub").textContent="Built from public information. Your real numbers will differ.";
-   document.querySelector("footer").textContent=`TAZ Track · An HTL Inspired Product · Simulated 6-month preview prepared for ${CFG.name}. Figures are estimates based on public information and typical results, not ${CFG.name}'s actual data.`;},0);})();
+buildReplay(CFG);
 
 // ---------- render ----------
 function renderAll(){renderKpis();renderVolume();renderAlerts();buildMap(document.getElementById("miniMap"),{mini:true});renderFreightList();renderShips();renderEx();renderScore();if(document.getElementById("v-map").classList.contains("on"))drawMap();}
